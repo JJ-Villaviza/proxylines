@@ -1,0 +1,12 @@
+{
+  "name": "proxylines",
+  "scripts": {
+    "dev": "bun run --hot server/index.ts"
+  },
+  "dependencies": {
+    "hono": "^4.7.10"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  }
+}
