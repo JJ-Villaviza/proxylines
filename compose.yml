@@ -2,18 +2,18 @@ services:
   db:
     image: postgres:17
     environment:
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=betternewsdb
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
-      - betternews-network
+      - proxylines-network
     ports:
-      - "5432:5432"
+      - 5432:${DATABASE_PORT}
 
 networks:
-  betternews-network:
+  proxylines-network:
     driver: bridge
 
 volumes:
