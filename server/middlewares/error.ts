@@ -1,3 +1,4 @@
+import { env } from "@/lib/env";
 import { type ErrorResponse } from "@/types/response";
 import { type Context } from "hono";
 import { HTTPException } from "hono/http-exception";
@@ -27,7 +28,7 @@ export const errorHandling = (error: Error | HTTPResponseError, c: Context) => {
     {
       success: false,
       error:
-        process.env.NODE_ENV === "production"
+        env.NODE_ENV === "production"
           ? "Internal Server Error"
           : error.stack ?? error.message,
     },
