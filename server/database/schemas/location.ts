@@ -1,16 +1,14 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { branchTable } from ".";
-import { bytea } from "../../lib/bytea";
 
-export const userImageTable = pgTable("userImage", {
+export const locationTable = pgTable("location", {
   id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  type: text("type").notNull(),
-  size: text("size").notNull(),
-  image: bytea("image").notNull(),
+  address: text("address").notNull(),
+  longitude: text("longitude").notNull(),
+  latitude: text("latitude").notNull(),
 
-  accessBy: text("access_by").notNull(),
+  branchId: text("branch_id").notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
@@ -21,9 +19,9 @@ export const userImageTable = pgTable("userImage", {
   deletedAt: timestamp("deleted_at", { withTimezone: true }),
 });
 
-export const userImageRelation = relations(userImageTable, ({ one }) => ({
+export const locationRelation = relations(locationTable, ({ one }) => ({
   branch: one(branchTable, {
-    fields: [userImageTable.accessBy],
+    fields: [locationTable.branchId],
     references: [branchTable.id],
   }),
 }));

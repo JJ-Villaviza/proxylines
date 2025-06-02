@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { branchTable } from ".";
+import { branchTable, profileTable } from ".";
 
 export const companyTable = pgTable("company", {
   id: text("id").primaryKey(),
@@ -8,8 +8,6 @@ export const companyTable = pgTable("company", {
   businessName: text("business_name").notNull(),
   mission: text("mission"),
   vision: text("vision"),
-
-  admin: text("admin").notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
@@ -20,6 +18,10 @@ export const companyTable = pgTable("company", {
   deletedAt: timestamp("deleted_at", { withTimezone: true }),
 });
 
-export const companyRelation = relations(companyTable, ({ many }) => ({
+export const companyRelation = relations(companyTable, ({ one, many }) => ({
   branch: many(branchTable),
+  profile: one(profileTable, {
+    fields: [companyTable.id],
+    references: [profileTable.accountId],
+  }),
 }));

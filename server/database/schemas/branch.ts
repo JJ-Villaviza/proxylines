@@ -1,11 +1,16 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
-import { accountTable, companyTable, sessionTable, userImageTable } from ".";
+import { pgEnum, pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { accountTable, companyTable, locationTable, sessionTable } from ".";
+
+export const establishmentEnum = pgEnum("type", ["main", "branch"]);
 
 export const branchTable = pgTable("branch", {
   id: text("id").primaryKey(),
   username: text("username").notNull().unique(),
   name: text("name").notNull(),
+  type: establishmentEnum().notNull(),
+
+  companyId: text("company_id").notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
@@ -22,15 +27,15 @@ export const branchRelation = relations(branchTable, ({ one }) => ({
     references: [accountTable.id],
   }),
   company: one(companyTable, {
+    fields: [branchTable.companyId],
+    references: [companyTable.id],
+  }),
+  location: one(locationTable, {
     fields: [branchTable.id],
-    references: [companyTable.admin],
+    references: [locationTable.branchId],
   }),
   session: one(sessionTable, {
     fields: [branchTable.id],
-    references: [sessionTable.accessBy],
-  }),
-  userImage: one(userImageTable, {
-    fields: [branchTable.id],
-    references: [userImageTable.accessBy],
+    references: [sessionTable.branchId],
   }),
 }));
