@@ -1,6 +1,8 @@
+import type { Branch, Session } from "@/types/schemas";
+
 export type Variables = {
   Variables: {
-    user: string | null;
-    session: string | null;
+    user: Branch | null;
+    session: Session | null;
   };
 };

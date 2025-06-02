@@ -5,7 +5,7 @@ import { branchTable, profileTable } from ".";
 export const companyTable = pgTable("company", {
   id: text("id").primaryKey(),
   email: text("email").unique().notNull(),
-  businessName: text("business_name").notNull(),
+  businessName: text("business_name"),
   mission: text("mission"),
   vision: text("vision"),
 
