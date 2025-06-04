@@ -1,17 +1,17 @@
 import { bytea } from "@/lib/bytea";
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { companyTable } from ".";
 
 export const profileTable = pgTable("userImage", {
-  id: text("id").primaryKey(),
+  id: uuid("id").primaryKey(),
   name: text("name").notNull(),
   type: text("type").notNull(),
   size: text("size").notNull(),
   image: bytea("image").notNull(),
   table: text("table").notNull(),
 
-  accountId: text("account_id").notNull(),
+  accountId: uuid("account_id").notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()

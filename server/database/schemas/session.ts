@@ -1,14 +1,14 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, timestamp, uuid } from "drizzle-orm/pg-core";
 import { branchTable } from ".";
 
 export const sessionTable = pgTable("session", {
-  id: text("id").primaryKey(),
-  token: text("token").notNull().unique(),
+  id: uuid("id").primaryKey().defaultRandom(),
+  token: uuid("token").notNull().unique(),
 
-  branchId: timestamp("branch_id", { withTimezone: true }).notNull(),
+  branchId: uuid("branch_id").notNull(),
 
-  expiresAt: timestamp("expires_at").notNull(),
+  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

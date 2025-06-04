@@ -1,9 +1,9 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { branchTable } from ".";
 
 export const locationTable = pgTable("location", {
-  id: text("id").primaryKey(),
+  id: uuid("id").primaryKey(),
   address: text("address").notNull(),
   longitude: text("longitude").notNull(),
   latitude: text("latitude").notNull(),

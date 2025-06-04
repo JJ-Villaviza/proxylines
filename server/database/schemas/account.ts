@@ -1,9 +1,9 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { branchTable } from ".";
 
 export const accountTable = pgTable("account", {
-  id: text("id").primaryKey(),
+  id: uuid("id").primaryKey(),
   password: text("password").notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true })

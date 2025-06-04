@@ -1,8 +1,6 @@
 import { randomBytes } from "crypto";
 
-export const idGenerator = () => {
-  let length: number = 10;
-
+export const idGenerator = (length: number): string => {
   if (length % 2 !== 0) {
     length++;
   }

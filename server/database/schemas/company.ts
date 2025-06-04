@@ -1,9 +1,9 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { branchTable, profileTable } from ".";
 
 export const companyTable = pgTable("company", {
-  id: text("id").primaryKey(),
+  id: uuid("id").primaryKey(),
   email: text("email").unique().notNull(),
   businessName: text("business_name"),
   mission: text("mission"),
