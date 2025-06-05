@@ -3,12 +3,14 @@ import { pgEnum, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
 import { accountTable, companyTable, locationTable, sessionTable } from ".";
 
 export const establishmentEnum = pgEnum("type", ["main", "branch"]);
+export const branchStatusEnum = pgEnum("status", ["online", "offline"]);
 
 export const branchTable = pgTable("branch", {
   id: uuid("id").primaryKey(),
   username: text("username").notNull().unique(),
   name: text("name").notNull(),
   type: establishmentEnum().notNull(),
+  status: branchStatusEnum().notNull().default("online"),
 
   companyId: uuid("company_id").notNull(),
 

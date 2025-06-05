@@ -5,6 +5,10 @@ export const registerValidation = z.object({
     .string()
     .min(3, { message: "Has to be minimum of 3 characters" })
     .max(30, { message: "Has to be maximum of 30 characters" }),
+  businessName: z
+    .string()
+    .min(3, { message: "Has to be minimum of 3 characters" })
+    .max(30, { message: "Has to be maximum of 30 characters" }),
   email: z.string().email({ message: "Needs to be valid email" }),
   username: z
     .string()
@@ -23,7 +27,19 @@ export const registerValidation = z.object({
     }),
 });
 
+export const branchAddValidation = registerValidation.pick({
+  name: true,
+  username: true,
+  password: true,
+});
+
+export const branchUpdateValidation = branchAddValidation.partial();
+
 export const loginValidation = z.object({
   username: z.string(),
   password: z.string(),
+});
+
+export const idValidation = z.object({
+  id: z.string(),
 });

@@ -20,7 +20,8 @@ const route = new Hono<Variables>()
     zValidator("form", registerValidation),
     requestId(),
     async (c) => {
-      const { name, email, username, password } = c.req.valid("form");
+      const { name, businessName, email, username, password } =
+        c.req.valid("form");
       const hash = await Bun.password.hash(password);
       const id = c.get("requestId");
 
@@ -38,6 +39,7 @@ const route = new Hono<Variables>()
         });
         await db.insert(s.companyTable).values({
           id,
+          businessName,
           email,
         });
 
@@ -72,11 +74,12 @@ const route = new Hono<Variables>()
       const branch = await db.query.branchTable.findFirst({
         columns: {
           id: true,
+          deletedAt: true,
         },
         where: (branch, { eq }) => eq(branch.username, username),
       });
 
-      if (!branch) {
+      if (!branch || branch.deletedAt !== null) {
         throw new HTTPException(401, {
           message: "Incredentials not correct!",
           cause: { form: true },
@@ -126,11 +129,9 @@ const route = new Hono<Variables>()
 
   // Sign-out route
   .get("/sign-out", sessionMiddleware, async (c) => {
-    const session = c.get("session")!;
+    const user = c.get("user")!;
 
-    await db
-      .delete(s.sessionTable)
-      .where(eq(s.sessionTable.branchId, session.branchId));
+    await db.delete(s.sessionTable).where(eq(s.sessionTable.branchId, user.id));
 
     deleteCookie(c, "__session");
 

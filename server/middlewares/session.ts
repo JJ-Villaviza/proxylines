@@ -42,6 +42,9 @@ export const sessionMiddleware = createMiddleware<Variables>(
 
     const expiresAt = new Date(session.expiresAt);
     if (expiresAt < new Date()) {
+      await db
+        .delete(s.sessionTable)
+        .where(eq(s.sessionTable.branchId, user.id));
       c.set("user", null);
       c.set("session", null);
       deleteCookie(c, "__session");
