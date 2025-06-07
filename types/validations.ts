@@ -25,6 +25,7 @@ export const registerValidation = z.object({
     .regex(/^(?=.*[A-Z]).{8,}$/, {
       message: "Should Contain at least one uppercase letter",
     }),
+  agreement: z.boolean(),
 });
 
 export const branchAddValidation = registerValidation.pick({
@@ -42,4 +43,8 @@ export const loginValidation = z.object({
 
 export const idValidation = z.object({
   id: z.string(),
+});
+
+export const emailValidation = registerValidation.pick({
+  email: true,
 });

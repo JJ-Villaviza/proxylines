@@ -1,14 +1,6 @@
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { AuthCard } from "@/components/auth-card";
+import { useAppForm } from "@/components/form";
+import { registerValidation } from "@/types/validations";
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/_auth/register")({
@@ -16,49 +8,67 @@ export const Route = createFileRoute("/_auth/register")({
 });
 
 function RouteComponent() {
+  const form = useAppForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      username: "",
+      password: "",
+      agreement: false,
+    },
+    validators: {
+      onChange: registerValidation,
+    },
+    onSubmit: async ({ value }) => console.log(value),
+  });
+
   return (
-    <Card>
-      <CardHeader className="text-center">
-        <CardTitle className="text-xl">Register</CardTitle>
-        <CardDescription>Enter details to register!</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form>
-          <div className="grid gap-6">
-            <div className="grid gap-3">
-              <Label htmlFor="name">Name</Label>
-              <Input id="name" type="text" required />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" required />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="username">Username</Label>
-              <Input id="username" type="text" required />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
-            </div>
-            <div className="flex gap-3">
-              <Checkbox id="agreement" />
-              <Label htmlFor="agrement">
-                I agree and read the Terms and Agreement
-              </Label>
-            </div>
-            <Button type="submit" className="w-full">
-              Register
-            </Button>
-            <div className="text-center text-sm">
-              Already have an account?{" "}
-              <Link to="/login" className="underline underline-offset-4">
-                Login
-              </Link>
-            </div>
+    <AuthCard title="Register" description="Enter details to register!">
+      <form>
+        <div className="grid gap-6">
+          <form.AppField
+            name="name"
+            children={(field: any) => <field.TextField label="Name" />}
+          />
+          <form.AppField
+            name="email"
+            children={(field: any) => (
+              <field.TextField label="Email" type="email" />
+            )}
+          />
+          <div className="flex flex-row gap-2">
+            <form.AppField
+              name="username"
+              children={(field: any) => <field.TextField label="Username" />}
+            />
+            <form.AppField
+              name="password"
+              children={(field: any) => (
+                <field.TextField
+                  label="Password"
+                  type="password"
+                  login={false}
+                />
+              )}
+            />
           </div>
-        </form>
-      </CardContent>
-    </Card>
+          <form.AppField
+            name="agreement"
+            children={(field: any) => (
+              <field.CheckboxField label="I agree and read the Terms and Agreement" />
+            )}
+          />
+          <form.AppForm>
+            <form.SubmitButton>Register</form.SubmitButton>
+          </form.AppForm>
+          <div className="text-center text-sm">
+            Already have an account?{" "}
+            <Link to="/login" className="underline underline-offset-4">
+              Login
+            </Link>
+          </div>
+        </div>
+      </form>
+    </AuthCard>
   );
 }
